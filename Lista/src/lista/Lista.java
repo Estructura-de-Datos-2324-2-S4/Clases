@@ -1,6 +1,6 @@
 package lista;
 
-public class Lista {
+public class Lista implements ILista{
     private Nodo head;
     private int size;
 
