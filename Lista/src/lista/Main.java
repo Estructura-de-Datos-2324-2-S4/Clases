@@ -10,6 +10,12 @@ public class Main {
         }
         System.out.println("ANTES");
         lista.print();
+        System.out.println("DELETE");
+        lista.deleteBegin();
+        lista.insertFinal(48);
+        lista.print();
+        System.out.println("Secuencial");
+        lista.printSecuencial();
         /*
         lista.insertInIndex(48, 3);
         System.out.println("DESPUES");

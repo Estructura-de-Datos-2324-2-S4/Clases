@@ -59,6 +59,7 @@ public class ListaArray implements ILista{
                 setHead(newArray.length-1);
                 setArray(newArray);
             } else {
+                nodo.setNext(getHead());
                 getArray()[position] = nodo;
                 setHead(position);
             }
@@ -68,7 +69,7 @@ public class ListaArray implements ILista{
     
     public NodoArray[] copyArray() {
         NodoArray[] newArray = new NodoArray[array.length + 1];
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < getArray().length; i++) {
             newArray[i] = getArray()[i];
         }
         return newArray;
@@ -90,33 +91,36 @@ public class ListaArray implements ILista{
             System.out.println("El maximo ya fue alcanzado");
         } else {
             if(isEmpty()) {
-                int position = searchSpace();
-                if (position == -1) {
-                    nodo.setNext(getHead());
-                    NodoArray[] newArray = copyArray();
-                    newArray[newArray.length-1] = nodo;
-                    setHead(newArray.length-1);
-                    setArray(newArray);
-                } else {
-                    getArray()[position] = nodo;
-                    setHead(position);
-                }
+                insertBegin(element);
             } else {
                 int position = searchSpace();
                 if (position == -1) {
                     NodoArray[] newArray = copyArray();
-                    NodoArray pointer = newArray[getHead()];
-                    while (newArray[pointer.getNext()] != null) {
-                        pointer = getArray()[pointer.getNext()];
+                    Integer pointer = getHead();
+                    while (newArray[pointer] != null) {
+                        if(newArray[pointer].getNext() != null) {
+                            pointer = newArray[pointer].getNext();
+                        } else {
+                            break;
+                        }
                     }
-                    pointer.setNext(newArray.length-1);
+                    newArray[pointer].setNext(newArray.length-1);
                     newArray[newArray.length-1] = nodo;
                     setArray(newArray);
-                } else {
+                } else {    
+                    Integer pointer = getHead();
+                    while (getArray()[pointer] != null) {
+                        if(getArray()[pointer].getNext() != null) {
+                            pointer = getArray()[pointer].getNext();
+                        } else {
+                            break;
+                        }
+                    }
+                    getArray()[pointer].setNext(position);
                     getArray()[position] = nodo;
                 }
+                size++;
             }
-            size++;
         }
     }
 
@@ -127,12 +131,32 @@ public class ListaArray implements ILista{
 
     @Override
     public Object deleteBegin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (isEmpty()) {
+            System.out.println("La lista esta vacia");
+        } else {
+            NodoArray pointer = getArray()[getHead()];
+            getArray()[getHead()] = null;
+            setHead(pointer.getNext());
+            pointer.setNext(null);
+            size--;
+            return pointer.getElement();
+        }
+        return null;
     }
 
     @Override
     public Object deleteFinal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (isEmpty()) {
+            System.out.println("La lista esta vacia");
+        } else {
+            NodoArray pointer = getArray()[getHead()];
+            getArray()[getHead()] = null;
+            setHead(pointer.getNext());
+            pointer.setNext(null);
+            size--;
+            return pointer.getElement();
+        }
+        return null;
     }
 
     @Override
@@ -149,7 +173,18 @@ public class ListaArray implements ILista{
         NodoArray pointer = getArray()[getHead()];
         while (pointer != null) {
             System.out.println("[ "+ pointer.getElement()+ " ]");
-            pointer = getArray()[pointer.getNext()];
+            if(pointer.getNext() != null) {
+                pointer = getArray()[pointer.getNext()];
+            } else {
+                break;
+            }
+            
+        }
+    }
+    
+    public void printSecuencial() {
+        for (int i = 0; i < getArray().length; i++) {
+            System.out.println("[ "+ getArray()[i].getElement()+ " ]");
         }
     }
     
