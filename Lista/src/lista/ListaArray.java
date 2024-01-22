@@ -149,12 +149,18 @@ public class ListaArray implements ILista{
         if (isEmpty()) {
             System.out.println("La lista esta vacia");
         } else {
-            NodoArray pointer = getArray()[getHead()];
-            getArray()[getHead()] = null;
-            setHead(pointer.getNext());
-            pointer.setNext(null);
+            Integer pointer = getHead();
+            while (getArray()[pointer] != null) {
+                if(getArray()[getArray()[pointer].getNext()].getNext() != null) {
+                    pointer = getArray()[pointer].getNext();
+                } else {
+                    break;
+                }
+            }
+            int pointer2 = getArray()[pointer].getNext();
+            getArray()[pointer2] = null;
+            getArray()[pointer].setNext(null);
             size--;
-            return pointer.getElement();
         }
         return null;
     }
